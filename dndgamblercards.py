@@ -579,7 +579,7 @@ def pokerHand():
         if (bm > 0):
             print("High Card. Bluffing negated the damage.")
         else:
-            print("High Card. Take half HP damage.")
+            print("High Card. Take {0} damage.".format(roll(4,2)))
 
     ### first set
     elif (results[0] == 1):
