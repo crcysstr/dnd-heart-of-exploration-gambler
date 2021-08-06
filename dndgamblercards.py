@@ -1887,6 +1887,60 @@ def rig():
     
     print("lol rigged")
 
+### save dexstate
+def save():
+
+    ### global var calls
+    global deck
+    global discard
+
+    ### open file
+    fi = open("savedata.txt", "w")
+
+    ### writes in discard
+    for i in discard:
+        fi.write(str(i)+"\n")
+
+    ### close file
+    fi.close()
+
+### load deckstate
+def load():
+
+    ### global var calls
+    global deck
+    global discard
+
+    ### open file
+    fi = open("savedata.txt", "r")
+
+    ### calls temp array
+    temparray = []
+    
+    ### goes through, puts it in
+    for line in fi:
+        strline = str(line)
+        strline.strip("\n")
+        intline = int(strline)
+        temparray.append(intline)
+
+    ### close file
+    fi.close()
+
+    ### puts temparray into discard   
+    discard = temparray
+
+    ### empties deck
+    deck = []
+
+    ### puts missing cards into deck
+    for i in range(1,55):
+        if i not in discard:
+            deck.append(i)
+
+    ### shuffles
+    random.shuffle(deck)
+
 ### main function run
 def main():
     global deck
@@ -1894,14 +1948,14 @@ def main():
 
     while(True):
         print("1 for CalcRisk, 2 for Greedy Draw, 3 for Quick Draw, 4 for Refill")
-        print("5 for Cheat the Flop, 6 for Remember, 7 for Lucky7, E for end")
-        print("8 for mill, 9 for bluff, 10 for fold, 11 for stack the deck")
+        print("5 for Cheat the Flop, 6 for Remember, 7 for Lucky7, 8 for mill")
+        print("9 for bluff, 10 for fold, 11 for stack the deck")
         print("12 for reverse draw, 13 for predict, 14 for subtle swap")
         print("15 for random refresh, 16 for ride the bus, 17 for blackjack")
         print("ATK for hit on diamond daggers attack")
-        print("PKR for poker hand")
-        print("CRIT for crit enable")
-        print("CNCL to cancel")
+        print("PKR for poker hand, CRIT for crit enable")
+        print("CNCL to cancel, E to exit")
+        print("SAVE to save, LOAD to load")
         ipt = input().lower()
         print()
         if (ipt == "1"):
@@ -1952,6 +2006,10 @@ def main():
             rig()
         elif (ipt == "cncl"):
             cancel()
+        elif (ipt == "save"):
+            save()
+        elif (ipt == "load"):
+            load()
 
 
         deckCheck()
