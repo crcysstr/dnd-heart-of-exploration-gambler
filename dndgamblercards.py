@@ -10,8 +10,8 @@ from typing import Coroutine, ValuesView
 ### jshoung stats
 DEX = 2
 INT = 3
-CHA = 4
-level = 7
+CHA = 5
+level = 8
 hitR = 25
 docD = 10
 
