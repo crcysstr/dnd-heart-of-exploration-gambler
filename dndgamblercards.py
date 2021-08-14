@@ -1,7 +1,7 @@
 ### lucas hsu
 ### dnd heart of exploration gambler class
-### ver: 3.1
-### date: 7/30
+### ver: 4.0
+### date: 8/14
 
 ### imported levels
 import random
@@ -11,6 +11,7 @@ from typing import Coroutine, ValuesView
 DEX = 2
 INT = 3
 CHA = 5
+PROF = 3
 level = 8
 hitR = 25
 docD = 10
@@ -36,6 +37,9 @@ bluff = [False, 2]
 crit = False
 swapped = False
 
+### for if you want to roll dice on your own
+selfroll = False
+
 ### draws a card
 def cardDraw():
 
@@ -50,6 +54,14 @@ def cardDraw():
     if (rCard == 17):
         print("\n!!!4 of Diamonds Drawn, gain Lifesteal!!!\n")
 
+    if (rCard == 54):
+        print("\nJoker Drawn, trigger Side Pot!\n")
+
+    val = (rCard - 1) % 13 + 1
+            
+    if (val == 1 or val == 11 or val == 12 or val == 13):
+        print("\nRoyal Drawn, trigger Side Pot!\n")
+
     ### if deck has been emptied
     size = len(deck)
 
@@ -61,7 +73,7 @@ def cardDraw():
             return rCard
 
         print("\nDesperate Deck Out!")
-        print("Lose half your max health, refilling, casting Greedy Draw:")
+        print("Lose half your current health, refilling, casting Greedy Draw:")
         refill()
         greedyDraw()
         print()
@@ -104,7 +116,7 @@ def cardEffect(cardN):
         print("Inflict AC-1 on a target within {0} meters".format(hitR))
         print("Increase hit by {0}".format(X))
         print("Inflict poison, dealing 1d10 for {0} turns on a target within {1} meters".format(X, hitR))
-        print("Heal {0} to a target within {1} meters".format(roll(4,X*critMod), hitR))
+        print("Heal {0} to a target within {1} meters".format(roll(4,X*critMod,0), hitR))
         print("Root for {0} turns".format(X))
         print("Give an ally within {0} meters 10 speed".format(hitR))
         print("Deal an extra {0} dies of damage".format(X2))
@@ -124,21 +136,21 @@ def cardEffect(cardN):
     elif (val == 2):
         print("Decrease your AC by 1 for 1 turn")
     elif (val == 3):
-        print("Take {0} damage".format(roll(4,2)))
+        print("Take {0} damage".format(roll(4,2,0)))
     elif (val == 4):
-        print("Decrease speed by 5 and take {0} damage".format(roll(4,1)))
+        print("Decrease speed by 5 and take {0} damage".format(roll(4,1,0)))
     elif (val == 5):
-        print("Take {0} damage".format(roll(4,1)))
+        print("Take {0} damage".format(roll(4,1,0)))
     elif (val == 6):
         print("Nothing happens.")
     elif (val == 7):
         print("Nothing happens.")
     elif (val == 8):
-        print("Deal {0} to target. Take {1} damage".format(roll(6,X*critMod),roll(4,2)))
+        print("Deal {0} to target. Take {1} damage".format(roll(6,X*critMod,0),roll(4,2,0)))
     elif (val == 9):
-        print("Increase your speed by 5 and deal {0} to target".format(roll(4,X*critMod)))
+        print("Increase your speed by 5 and deal {0} to target".format(roll(4,X*critMod,0)))
     elif (val == 10):
-        print("Deal {0} to target and heal {1} to a target".format(roll(8,X*critMod),roll(4,X*critMod)))
+        print("Deal {0} to target and heal {1} to a target".format(roll(8,X*critMod,0),roll(4,X*critMod,0)))
     elif (val == 11):
         if (suit == 0 or suit == 3):
             print("Inflict AC-1 on a target within {0} meters".format(hitR))
@@ -148,7 +160,7 @@ def cardEffect(cardN):
         if (suit == 0 or suit == 3):
             print("Inflict poison, dealing 1d10 for {0} turns on a target within {1} meters".format(X, hitR))
         else:
-            print("Heal {0} to a target within {1} meters".format(roll(4,X*critMod), hitR))
+            print("Heal {0} to a target within {1} meters".format(roll(4,X*critMod,0), hitR))
     elif (val == 0):
         if (suit == 0 or suit == 3):
             print("Root for {0} turns".format(X))
@@ -233,14 +245,14 @@ def calcRisk():
 
         ### card effect used
         if (ipt == "1"):
-            print("Hit Roll: {0}".format(roll(20, 1)+INT))
+            print("Hit Roll: {0}".format(roll(20, 1, INT+PROF)))
             cardEffect(card)
             unSwap()
             return
         
         ### card thrown
         elif (ipt == "2"):
-            print("Hit Roll: {0}".format(roll(20, 1)+INT))
+            print("Hit Roll: {0}".format(roll(20, 1, INT+PROF)))
             if (card == 53):
                 val = 0
             elif (card == 54):
@@ -353,7 +365,7 @@ def fold():
             val = tval
 
     ### heals, refills
-    print("Heal {0}".format(roll(4,12-val)))
+    print("Heal {0}".format(roll(4,12-val,0)))
     refill()
 
     unSwap()
@@ -579,7 +591,7 @@ def pokerHand():
         if (bm > 0):
             print("High Card. Bluffing negated the damage.")
         else:
-            print("High Card. Take {0} damage.".format(roll(4,2)))
+            print("High Card. Take {0} damage.".format(roll(4,2,0)))
 
     ### first set
     elif (results[0] == 1):
@@ -591,21 +603,21 @@ def pokerHand():
             print("{0}-high flush in {1}".format(cardNames[results[2]-1], suitNames[results[4]]))
         else:
             print("{0} {1}".format(resultNames[results[1]-1], cardNames[results[2]-1]))
-        print("Deal {0}".format(roll(docD+bm, results[1])+refactor(results[2])+mods[results[3]]))
+        print("Deal {0}".format(roll(docD+bm, results[1], refactor(results[2]) + mods[results[3]])))
         #print("{0}d{3}+{1}+{2}".format(results[1],refactor(results[2]),mods[results[3]],docD+bm))
 
     ### full house
     elif (results[0] == 2):
         print("Full House of {0} over {1}!".format(cardNames[results[2]-1], cardNames[results[4]-1]))
-        print("Deal {0}".format(roll(docD+bm, results[1])+refactor(results[2])+mods[results[3]]))
-        print("Heal two allies {0}".format(roll(4, refactor(results[4]))))
+        print("Deal {0}".format(roll(docD+bm, results[1], refactor(results[2]) + mods[results[3]])))
+        print("Heal two allies {0}".format(roll(4, refactor(results[4], 0))))
         #print("{0}d{3}+{1}+{2}".format(results[1],refactor(results[2]),mods[results[3]],docD+bm))
 
     ### 4/kind
     elif (results[0] == 3):
         print("Four of a Kind of {0}!".format(cardNames[results[2]-1]))
-        print("Deal {0}".format(roll(docD+bm, results[1])+4*refactor(results[2])+mods[results[3]]))
-        print("Heal four allies {0}".format(roll(4, refactor(results[4]))))
+        print("Deal {0}".format(roll(docD+bm, results[1], 4*refactor(results[2]) + mods[results[3]])))
+        print("Heal four allies {0}".format(roll(4, refactor(results[4]), 0)))
         #print("{0}d{3}+{1}+{2}".format(results[1],refactor(results[2]),mods[results[3]],docD+bm))
 
     ### straight flush
@@ -1020,7 +1032,7 @@ def lucky7():
 
     ### draws 3d4 cards
     cards = []
-    drawn = roll(4,3)
+    drawn = hardroll(4,3,0)
     print("{0} cards drawn!\n".format(drawn))
     for i in range(0,drawn):
         cards.append(cardDraw())
@@ -1073,7 +1085,7 @@ def mill():
     global discard
 
     ### draws cards, mills them
-    drawn = roll(6,1)
+    drawn = hardroll(6,1,0)
     print("{0} cards milled!\n".format(drawn))
     for i in range(0,drawn):
         cardDraw()  
@@ -1089,8 +1101,8 @@ def stackDeck():
     global discard
     vocab = ["first", "second", "third", "fourth"]
 
-    ### draws 1d4 cards
-    drawn = roll(4,1)
+    ### draws 1d4+1 cards
+    drawn = hardroll(4,1,1)
     print("Top {0} cards:".format(drawn))
     cards = []
     for i in range(0, drawn):
@@ -1417,7 +1429,7 @@ def rideBus():
 
     ### grabs dice, rolls
     dice = [0,2,3,6,9][success]
-    print("Deal {0} damage.".format(roll(success*2+2, dice)))
+    print("Deal {0} damage.".format(roll(success*2+2, dice, 0)))
 
     unSwap()
 
@@ -1484,17 +1496,17 @@ def blackjack():
     ### blackjack
     if (total == 21):
         print("BLACKJACK!")
-        print("Heal {0}; up to 7 of it can go into temporary HP.".format(roll(4,6)))
+        print("Heal {0}; up to 7 of it can go into temporary HP.".format(roll(4,6,0)))
 
     ### bust
     elif (total > 21):
         print("You busted.")
-        print("Take {0} damage.".format(roll(4,total-21)))
+        print("Take {0} damage.".format(roll(4,total-21,0)))
 
     ### fold
     elif (total > 0):
         print("You folded.")
-        print("Heal {0}.".format(roll(4, max(0, total-15))))
+        print("Heal {0}.".format(roll(4, max(0, total-15),0)))
 
     ### something weird happened
     else:
@@ -1510,10 +1522,38 @@ def blackjack():
 ### Performs a dice roll
 ### input 1: dieSides (sides per die)
 ### input 2: dieNo (number of dice to roll)
-def roll(dieSides, dieNo):
+def roll(dieSides, dieNo, constMod):
 
+    ### global var
+    global selfroll
+
+    if (selfroll):
+
+        if (constMod == 0):
+            print("\nRoll {0}d{1}".format(dieNo, dieSides))
+
+        else:
+            print("\nRoll {0}d{1}+{2}".format(dieNo, dieSides, constMod))
+
+        return "rolled"
+
+    else:
+
+        ### initialize
+        out = constMod
+
+        ### roll number of times with dice sides
+        for i in range(0, dieNo):
+            out += random.randint(1, dieSides)
+
+        ### return
+        return out
+
+### roll but without selfroll capabilities
+def hardroll(dieSides, dieNo, constMod):
+    
     ### initialize
-    out = 0
+    out = constMod
 
     ### roll number of times with dice sides
     for i in range(0, dieNo):
@@ -1783,7 +1823,7 @@ def diamondHands():
         suit = int((drawn - 1)/13)
         dice += 1
 
-    print ("\nDrew {0} cards! Deal {1} damage!".format(dice, roll(4, 2*dice*critMod)+INT))
+    print ("\nDrew {0} cards! Deal {1} damage!".format(dice, roll(4, 2*dice*critMod, 2*DEX)))
 
     unSwap()
 
@@ -1941,6 +1981,19 @@ def load():
     ### shuffles
     random.shuffle(deck)
 
+### toggle rolling on your own or not
+def toggleRoll():
+
+    global selfroll
+
+    if (selfroll):
+        print("Rolls will now be done for you!")
+    
+    else:
+        print("Rolls will no longer be done for you. Roll on your own.")
+
+    selfroll = not selfroll
+
 ### main function run
 def main():
     global deck
@@ -1956,6 +2009,7 @@ def main():
         print("PKR for poker hand, CRIT for crit enable")
         print("CNCL to cancel, E to exit")
         print("SAVE to save, LOAD to load")
+        print("ROLL to toggle rolling for yourself")
         ipt = input().lower()
         print()
         if (ipt == "1"):
@@ -2010,6 +2064,8 @@ def main():
             save()
         elif (ipt == "load"):
             load()
+        elif (ipt == "roll"):
+            toggleRoll()
 
 
         deckCheck()
