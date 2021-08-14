@@ -2000,15 +2000,13 @@ def main():
     global discard
 
     while(True):
-        print("1 for CalcRisk, 2 for Greedy Draw, 3 for Quick Draw, 4 for Refill")
-        print("5 for Cheat the Flop, 6 for Remember, 7 for Lucky7, 8 for mill")
-        print("9 for bluff, 10 for fold, 11 for stack the deck")
-        print("12 for reverse draw, 13 for predict, 14 for subtle swap")
+        print("1 for CalcRisk, 2 for Greedy Draw, 3 for Quick Draw, 4 for Refill, 5 for Cheat the Flop")
+        print("6 for Remember, 7 for Lucky7, 8 for mill, 9 for bluff, 10 for fold")
+        print("11 for stack the deck, 12 for reverse draw, 13 for predict, 14 for subtle swap")
         print("15 for random refresh, 16 for ride the bus, 17 for blackjack")
         print("ATK for hit on diamond daggers attack")
-        print("PKR for poker hand, CRIT for crit enable")
-        print("CNCL to cancel, E to exit")
-        print("SAVE to save, LOAD to load")
+        print("PKR for poker hand, CRIT for crit enable, CNCL to cancel")
+        print("SAVE to save, LOAD to load, E to exit")
         print("ROLL to toggle rolling for yourself")
         ipt = input().lower()
         print()
