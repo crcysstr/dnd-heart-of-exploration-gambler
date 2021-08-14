@@ -1783,7 +1783,7 @@ def diamondHands():
         suit = int((drawn - 1)/13)
         dice += 1
 
-    print ("\nDrew {0} cards! Deal {1} damage!".format(dice, roll(4, dice*critMod)+INT))
+    print ("\nDrew {0} cards! Deal {1} damage!".format(dice, roll(4, 2*dice*critMod)+INT))
 
     unSwap()
 
