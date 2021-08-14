@@ -413,7 +413,11 @@ def bluffCheck(card, num):
         elif (card == 53):
             print("Blank Card bluffed to Joker!")
             card = 54
-        elif (val >= 2 and val <= 8):
+        elif (val >= 2 and val <= 7):
+            card += 3
+            print("Bluffed to:", end = " ")
+            interpret(card)
+        elif (val == 8):
             card += 2
             print("Bluffed to:", end = " ")
             interpret(card)
@@ -465,7 +469,11 @@ def multiBluffCheck(cards, num):
             elif (cards[i] == 53):
                 print("Blank Card bluffed to Joker!")
                 cards[i] = 54
-            elif (val >= 2 and val <= 8):
+            elif (val >= 2 and val <= 7):
+                cards[i] += 3
+                print("Bluffed to:", end = " ")
+                interpret(cards[i])
+            elif (val == 8):
                 cards[i] += 2
                 print("Bluffed to:", end = " ")
                 interpret(cards[i])
@@ -562,7 +570,7 @@ def pokerHand():
     ### bluff stuff
     bm = 0
     if (pokerBluffCheck()):
-        bm = 2
+        bm = 3
 
     ### draws your hands
     cards = []
