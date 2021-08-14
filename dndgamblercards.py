@@ -1,6 +1,6 @@
 ### lucas hsu
 ### dnd heart of exploration gambler class
-### ver: 4.0
+### ver: 4.5
 ### date: 8/14
 
 ### imported levels
@@ -1520,9 +1520,11 @@ def blackjack():
     else:
         print("Error")
 
-    ### puts cards back in discard
+    ### puts cards into deck
     for i in bjhand:
-        discard.append(i)
+        deck.append(i)
+
+    random.shuffle(deck)
 
     unSwap()
 
