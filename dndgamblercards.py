@@ -1107,7 +1107,7 @@ def stackDeck():
     ### variables
     global deck
     global discard
-    vocab = ["first", "second", "third", "fourth"]
+    vocab = ["first", "second", "third", "fourth", "fifth"]
 
     ### draws 1d4+1 cards
     drawn = hardroll(4,1,1)
