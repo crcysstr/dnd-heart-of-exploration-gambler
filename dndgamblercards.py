@@ -618,7 +618,7 @@ def pokerHand():
     elif (results[0] == 2):
         print("Full House of {0} over {1}!".format(cardNames[results[2]-1], cardNames[results[4]-1]))
         print("Deal {0}".format(roll(docD+bm, results[1], refactor(results[2]) + mods[results[3]])))
-        print("Heal two allies {0}".format(roll(4, refactor(results[4], 0))))
+        print("Heal two allies {0}".format(roll(4, refactor(results[4]), 0)))
         #print("{0}d{3}+{1}+{2}".format(results[1],refactor(results[2]),mods[results[3]],docD+bm))
 
     ### 4/kind
@@ -654,6 +654,11 @@ def pokerHand():
 def pokerProcess(cards):
     
     ### preps vars
+    ## results[0] == classification
+    ## results[1] == multiplier
+    ## results[2] == card value
+    ## results[3] == modifier
+    ## results[4] == suit?
     results = [0,0,0,0,0]
     vals = []
     suits = []
