@@ -11,7 +11,7 @@ from typing import Coroutine, ValuesView
 DEX = 2
 INT = 3
 CHA = 5
-PROF = 3
+PROF = 4
 level = 8
 hitR = 25
 docD = 10
